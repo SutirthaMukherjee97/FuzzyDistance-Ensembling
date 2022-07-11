@@ -26,3 +26,10 @@ def final_model():
   model = tf.keras.Model(feature_extractor_model.input, x)
   my_model = tf.keras.models.clone_model(model)
   return my_model
+model_RGB=final_model()
+# plot_model(model_RGB , show_shapes= True , show_layer_names=True, to_file='base-model.png')
+model_RGB.compile( optimizer= tf.keras.optimizers.Adam(learning_rate=1e-4),loss='categorical_crossentropy',metrics=['accuracy'])
+from keras.callbacks import ModelCheckpoint
+checkpoint = ModelCheckpoint(filepath='/content/gdrive/MyDrive/bestmodel_Sutirtha_RGB/mymodel_NUS_New_RGB__2', verbose=2,save_best_only=True)
+callbacks = [checkpoint]
+history=model_RGB.fit(x = train,epochs=150,validation_data=validation,verbose=2, callbacks=callbacks)
